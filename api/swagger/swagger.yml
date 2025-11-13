@@ -1,0 +1,317 @@
+swagger: "2.0"
+info:
+  title: API-service
+  description: API service for questions and answers
+  version: 1.0.0
+schemes:
+  - https
+  - http
+host: localhost
+basePath: /api
+produces:
+  - application/json
+consumes:
+  - application/json
+paths:
+  /questions/:
+    get:
+      description: Get a list of questions
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Questions response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Question'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Internal server
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    post:
+      summary: Create question
+      description: Create a new question
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: question
+          required: true
+          schema:
+            $ref: '#/definitions/QuestionCreate'
+      responses:
+        201:
+          description: Question is created
+          schema:
+            $ref: '#/definitions/Question'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Internal server
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+
+  /questions/{id}:
+    get:
+      summary: Get question by id
+      description: Get a question
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          format: int64
+          required: true
+          description: Question id
+      responses:
+        200:
+          description: Get question with answers
+          schema:
+            $ref: '#/definitions/QuestionWithAnswers'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        404:
+          description: Question not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Internal server
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    delete:
+      summary: Delete question by id
+      description: Delete a question
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          format: int64
+          required: true
+          description: Question id
+      responses:
+        204:
+          description: Question deleted
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        404:
+          description: Question not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Internal server
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  /questions/{id}/answers/:
+    post:
+      summary: Add answer to question
+      description: Add answer to the question by id
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          format: int64
+          required: true
+          description: Question id
+        - in: body
+          name: answer
+          required: true
+          schema:
+            $ref: '#/definitions/AnswerCreate'
+      responses:
+        201:
+          description: Answer is created
+          schema:
+            $ref: '#/definitions/Answer'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        404:
+          description: Question not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Internal server
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  /answers/{id}:
+    get:
+      summary: Get answer by id
+      description: Get the answer
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          format: int64
+          required: true
+      responses:
+        200:
+          description: Answer
+          schema:
+            $ref: '#/definitions/Answer'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        404:
+          description: Answer not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Internal server
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    delete:
+      summary: Delete answer by id
+      description: Delete the answer
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          format: int64
+          required: true
+        - in: header
+          name: user_id
+          type: string
+          required: true
+          description: UUID of the user deleting answer
+      responses:
+        204:
+          description: Answer deleted
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        403:
+          description: Only answer owner can delete
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        404:
+          description: Answer not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Internal server
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+definitions:
+  Question:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Question id
+      text:
+        type: string
+        description: Question text
+      created_at:
+        type: string
+        format: date-time
+        description: Question creation date
+
+  QuestionCreate:
+    type: object
+    required:
+      - text
+    properties:
+      text:
+        type: string
+        description: Question text
+
+  QuestionWithAnswers:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Question id
+      text:
+        type: string
+        description: Question text
+      created_at:
+        type: string
+        format: date-time
+        description: Question creation date
+      answers:
+        type: array
+        items:
+          $ref: '#/definitions/Answer'
+
+  Answer:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Answer id
+      question_id:
+        type: integer
+        format: int64
+        description: Question id
+      user_id:
+        type: integer
+        format: int64
+        description: User id
+      text:
+        type: string
+        description: Answer text
+      created_at:
+        type: string
+        format: date-time
+        description: Answer creation date
+
+  AnswerCreate:
+    type: object
+    required:
+      - user_id
+      - text
+    properties:
+      user_id:
+        type: integer
+        format: int64
+        description: User id
+      text:
+        type: string
+        description: Answer text
+
+  ErrorResponse:
+    type: object
+    description: Error type
+    properties:
+      code:
+        type: integer
+        description: Error code
+      message:
+        type: string
+        description: Error message
+      detail:
+        type: string
+        description: Error additional details
+
+
+
