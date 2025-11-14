@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   title: API-service
-  description: API service for questions and answers
+  description: API service for repo and answers
   version: 1.0.0
 schemes:
   - https
@@ -15,7 +15,7 @@ consumes:
 paths:
   /questions/:
     get:
-      description: Get a list of questions
+      description: Get a list of repo
       produces:
         - application/json
       responses:
@@ -221,6 +221,10 @@ paths:
 definitions:
   Question:
     type: object
+    required:
+      - id
+      - text
+      - created_at
     properties:
       id:
         type: integer
@@ -264,6 +268,12 @@ definitions:
 
   Answer:
     type: object
+    required:
+      - id
+      - question_id
+      - user_id
+      - text
+      - created_at
     properties:
       id:
         type: integer
@@ -274,8 +284,7 @@ definitions:
         format: int64
         description: Question id
       user_id:
-        type: integer
-        format: int64
+        type: string
         description: User id
       text:
         type: string
@@ -292,8 +301,7 @@ definitions:
       - text
     properties:
       user_id:
-        type: integer
-        format: int64
+        type: string
         description: User id
       text:
         type: string
