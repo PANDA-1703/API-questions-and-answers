@@ -3,11 +3,11 @@ module API-quest-answ
 go 1.25
 
 require (
-	github.com/avito-tech/go-transaction-manager/trm/v2 v2.0.2
 	github.com/go-openapi/errors v0.22.4
 	github.com/go-openapi/strfmt v0.25.0
 	github.com/go-openapi/swag v0.25.1
 	github.com/go-openapi/validate v0.25.1
+	github.com/golang/mock v1.6.0
 	github.com/lmittmann/tint v1.1.2
 	github.com/pressly/goose/v3 v3.26.0
 	github.com/spf13/viper v1.21.0

@@ -6,13 +6,6 @@ import (
 	"fmt"
 )
 
-//type AnswersRepo interface {
-//	CreateAnswer(ctx context.Context, answer entity.Answer) (int64, error)
-//	GetAnswerByID(ctx context.Context, id int64) (entity.Answer, error)
-//	GetAllByQuestionID(ctx context.Context, questionID int64) ([]entity.Answer, error)
-//	DeleteAnswer(ctx context.Context, id int64, userID string) error
-//}
-
 func (u Usecase) CreateAnswers(ctx context.Context, answer *entity.Answer) (int64, error) {
 	id, err := u.answersRepo.CreateAnswer(ctx, answer)
 	if err != nil {

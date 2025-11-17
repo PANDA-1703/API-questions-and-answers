@@ -7,7 +7,13 @@ import (
 	"context"
 )
 
-//go:generate mockgen -source=usecase.go -destination=./mocks/answers_repo_mock.go -package=mocks
+/*
+Сгенерить моки:
+
+cd internal/usecase/answers
+mockgen -source=usecase.go -destination=./mocks/answers_repo_mock.go -package=mocks
+*/
+
 type AnswersRepo interface {
 	CreateAnswer(ctx context.Context, answer *entity.Answer) (int64, error)
 	GetAnswerByID(ctx context.Context, id int64) (*entity.Answer, error)
