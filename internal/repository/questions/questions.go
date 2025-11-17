@@ -1,4 +1,4 @@
-package repo
+package questions
 
 import (
 	"API-quest-answ/internal/entity"
@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func (r Repo) Create(ctx context.Context, question *entity.Question) (int64, error) {
+func (r *repo) Create(ctx context.Context, question *entity.Question) (int64, error) {
 	result := r.db.WithContext(ctx).Create(&question)
 	if result.Error != nil {
 		return 0, fmt.Errorf("QuestionsRepo.Create: %w", result.Error)
@@ -14,7 +14,7 @@ func (r Repo) Create(ctx context.Context, question *entity.Question) (int64, err
 	return question.ID, nil
 }
 
-func (r Repo) GetAll(ctx context.Context) ([]*entity.Question, error) {
+func (r *repo) GetAll(ctx context.Context) ([]*entity.Question, error) {
 	var questions []*entity.Question
 	result := r.db.WithContext(ctx).Find(&questions)
 	if result.Error != nil {
@@ -23,7 +23,7 @@ func (r Repo) GetAll(ctx context.Context) ([]*entity.Question, error) {
 	return questions, nil
 }
 
-func (r Repo) GetByID(ctx context.Context, id int64) (*entity.Question, error) {
+func (r *repo) GetByID(ctx context.Context, id int64) (*entity.Question, error) {
 	var question *entity.Question
 	result := r.db.WithContext(ctx).First(&question, id)
 	if result.Error != nil {
@@ -32,8 +32,9 @@ func (r Repo) GetByID(ctx context.Context, id int64) (*entity.Question, error) {
 	return question, nil
 }
 
-func (r Repo) Delete(ctx context.Context, id int64, userID string) error {
-	result := r.db.WithContext(ctx).Where("id = ? AND user_id = ?", id, userID).Delete(&entity.Question{})
+func (r *repo) Delete(ctx context.Context, id int64) error {
+	var question *entity.Question
+	result := r.db.WithContext(ctx).Delete(&question, id)
 	if result.Error != nil {
 		return fmt.Errorf("QuestionsRepo.Delete: %w", result.Error)
 	}

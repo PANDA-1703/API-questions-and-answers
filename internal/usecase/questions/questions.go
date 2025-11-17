@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func (u Usecase) Create(ctx context.Context, question *entity.Question) (int64, error) {
+func (u QuestionUsecase) Create(ctx context.Context, question *entity.Question) (int64, error) {
 	id, err := u.questionsRepo.Create(ctx, question)
 	if err != nil {
 		return 0, fmt.Errorf("uc questions: create failed: %w", err)
@@ -14,7 +14,7 @@ func (u Usecase) Create(ctx context.Context, question *entity.Question) (int64, 
 	return id, nil
 }
 
-func (u Usecase) GetAll(ctx context.Context) ([]*entity.Question, error) {
+func (u QuestionUsecase) GetAll(ctx context.Context) ([]*entity.Question, error) {
 	questions, err := u.questionsRepo.GetAll(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("uc questions: get all failed: %w", err)
@@ -22,7 +22,7 @@ func (u Usecase) GetAll(ctx context.Context) ([]*entity.Question, error) {
 	return questions, nil
 }
 
-func (u Usecase) GetByID(ctx context.Context, id int64) (*entity.Question, error) {
+func (u QuestionUsecase) GetByID(ctx context.Context, id int64) (*entity.Question, error) {
 	question, err := u.questionsRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("uc questions: get by id failed: %w", err)
@@ -30,8 +30,8 @@ func (u Usecase) GetByID(ctx context.Context, id int64) (*entity.Question, error
 	return question, nil
 }
 
-func (u Usecase) Delete(ctx context.Context, id int64, userID string) error {
-	err := u.questionsRepo.Delete(ctx, id, userID)
+func (u QuestionUsecase) Delete(ctx context.Context, id int64) error {
+	err := u.questionsRepo.Delete(ctx, id)
 	if err != nil {
 		return fmt.Errorf("uc questions: delete failed %w", err)
 	}

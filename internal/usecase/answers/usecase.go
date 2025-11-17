@@ -3,6 +3,7 @@ package answers
 import (
 	"API-quest-answ/internal/config"
 	"API-quest-answ/internal/entity"
+	"API-quest-answ/internal/usecase/questions"
 	"API-quest-answ/pkg/logger"
 	"context"
 )
@@ -15,26 +16,29 @@ mockgen -source=usecase.go -destination=./mocks/answers_repo_mock.go -package=mo
 */
 
 type AnswersRepo interface {
-	CreateAnswer(ctx context.Context, answer *entity.Answer) (int64, error)
-	GetAnswerByID(ctx context.Context, id int64) (*entity.Answer, error)
+	Create(ctx context.Context, answer *entity.Answer) (int64, error)
+	GetByID(ctx context.Context, id int64) (*entity.Answer, error)
 	GetAllByQuestionID(ctx context.Context, questionID int64) ([]*entity.Answer, error)
-	DeleteAnswer(ctx context.Context, id int64, userID string) error
+	Delete(ctx context.Context, id int64, userID string) error
 }
 
-type Usecase struct {
-	cfg         *config.ServiceConfig
-	answersRepo AnswersRepo
-	logger      logger.Logger
+type AnswersUsecase struct {
+	cfg           *config.ServiceConfig
+	answersRepo   AnswersRepo
+	questionsRepo questions.QuestionsRepo
+	logger        logger.Logger
 }
 
-func New(
+func NewAnswer(
 	cfg *config.ServiceConfig,
 	answersRepo AnswersRepo,
+	questionsRepo questions.QuestionsRepo,
 	logger logger.Logger,
-) *Usecase {
-	return &Usecase{
-		cfg:         cfg,
-		answersRepo: answersRepo,
-		logger:      logger,
+) *AnswersUsecase {
+	return &AnswersUsecase{
+		cfg:           cfg,
+		answersRepo:   answersRepo,
+		questionsRepo: questionsRepo,
+		logger:        logger,
 	}
 }

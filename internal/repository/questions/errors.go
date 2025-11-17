@@ -1,4 +1,4 @@
-package repository
+package questions
 
 import "github.com/go-openapi/errors"
 

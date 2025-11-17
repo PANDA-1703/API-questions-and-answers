@@ -8,6 +8,7 @@ require (
 	github.com/go-openapi/swag v0.25.1
 	github.com/go-openapi/validate v0.25.1
 	github.com/golang/mock v1.6.0
+	github.com/gorilla/mux v1.8.1
 	github.com/lmittmann/tint v1.1.2
 	github.com/pressly/goose/v3 v3.26.0
 	github.com/spf13/viper v1.21.0

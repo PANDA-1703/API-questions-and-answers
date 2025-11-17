@@ -15,7 +15,7 @@ type Question struct {
 }
 
 func (Question) TableName() string {
-	return "repo"
+	return "questions"
 }
 
 func FromHTTPQuestion(q *models.QuestionCreate) *Question {

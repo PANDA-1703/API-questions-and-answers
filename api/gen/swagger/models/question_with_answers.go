@@ -21,17 +21,21 @@ import (
 type QuestionWithAnswers struct {
 
 	// answers
+	// Required: true
 	Answers []*Answer `json:"answers"`
 
 	// Question creation date
+	// Required: true
 	// Format: date-time
-	CreatedAt strfmt.DateTime `json:"created_at,omitempty"`
+	CreatedAt *strfmt.DateTime `json:"created_at"`
 
 	// Question id
-	ID int64 `json:"id,omitempty"`
+	// Required: true
+	ID *int64 `json:"id"`
 
 	// Question text
-	Text string `json:"text,omitempty"`
+	// Required: true
+	Text *string `json:"text"`
 }
 
 // Validate validates this question with answers
@@ -46,6 +50,14 @@ func (m *QuestionWithAnswers) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateText(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
@@ -53,8 +65,9 @@ func (m *QuestionWithAnswers) Validate(formats strfmt.Registry) error {
 }
 
 func (m *QuestionWithAnswers) validateAnswers(formats strfmt.Registry) error {
-	if swag.IsZero(m.Answers) { // not required
-		return nil
+
+	if err := validate.Required("answers", "body", m.Answers); err != nil {
+		return err
 	}
 
 	for i := 0; i < len(m.Answers); i++ {
@@ -79,11 +92,30 @@ func (m *QuestionWithAnswers) validateAnswers(formats strfmt.Registry) error {
 }
 
 func (m *QuestionWithAnswers) validateCreatedAt(formats strfmt.Registry) error {
-	if swag.IsZero(m.CreatedAt) { // not required
-		return nil
+
+	if err := validate.Required("created_at", "body", m.CreatedAt); err != nil {
+		return err
 	}
 
 	if err := validate.FormatOf("created_at", "body", "date-time", m.CreatedAt.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *QuestionWithAnswers) validateID(formats strfmt.Registry) error {
+
+	if err := validate.Required("id", "body", m.ID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *QuestionWithAnswers) validateText(formats strfmt.Registry) error {
+
+	if err := validate.Required("text", "body", m.Text); err != nil {
 		return err
 	}
 

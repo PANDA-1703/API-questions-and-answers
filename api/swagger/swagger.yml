@@ -249,6 +249,11 @@ definitions:
 
   QuestionWithAnswers:
     type: object
+    required:
+      - id
+      - text
+      - created_at
+      - answers
     properties:
       id:
         type: integer

@@ -18,21 +18,21 @@ type QuestionsRepo interface {
 	Create(ctx context.Context, question *entity.Question) (int64, error)
 	GetAll(ctx context.Context) ([]*entity.Question, error)
 	GetByID(ctx context.Context, id int64) (*entity.Question, error)
-	Delete(ctx context.Context, id int64, userID string) error
+	Delete(ctx context.Context, id int64) error
 }
 
-type Usecase struct {
+type QuestionUsecase struct {
 	cfg           *config.ServiceConfig
 	questionsRepo QuestionsRepo
 	logger        logger.Logger
 }
 
-func New(
+func NewQuestion(
 	cfg *config.ServiceConfig,
 	questionsRepo QuestionsRepo,
 	logger logger.Logger,
-) *Usecase {
-	return &Usecase{
+) *QuestionUsecase {
+	return &QuestionUsecase{
 		cfg:           cfg,
 		questionsRepo: questionsRepo,
 		logger:        logger,
