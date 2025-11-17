@@ -32,10 +32,13 @@ func (r Repo) GetByID(ctx context.Context, id int64) (*entity.Question, error) {
 	return question, nil
 }
 
-func (r Repo) Delete(ctx context.Context, id int64) error {
-	result := r.db.WithContext(ctx).Delete(&entity.Question{}, id)
+func (r Repo) Delete(ctx context.Context, id int64, userID string) error {
+	result := r.db.WithContext(ctx).Where("id = ? AND user_id = ?", id, userID).Delete(&entity.Question{})
 	if result.Error != nil {
 		return fmt.Errorf("QuestionsRepo.Delete: %w", result.Error)
+	}
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("QuestionsRepo.Delete: questions not found or permission denied")
 	}
 	return nil
 }
