@@ -1,15 +1,15 @@
 package http
 
 import (
-	"API-quest-answ/api/gen/swagger/models"
-	"API-quest-answ/internal/config"
-	"API-quest-answ/internal/entity"
-	"API-quest-answ/internal/repository/questions"
-	"API-quest-answ/internal/usecase/answers"
-	questionsUC "API-quest-answ/internal/usecase/questions"
-	"API-quest-answ/pkg/logger"
 	"encoding/json"
 	"errors"
+	"github.com/PANDA-1703/API-questions-and-answers/api/gen/swagger/models"
+	"github.com/PANDA-1703/API-questions-and-answers/internal/config"
+	"github.com/PANDA-1703/API-questions-and-answers/internal/entity"
+	"github.com/PANDA-1703/API-questions-and-answers/internal/repository/questions"
+	"github.com/PANDA-1703/API-questions-and-answers/internal/usecase/answers"
+	questionsUC "github.com/PANDA-1703/API-questions-and-answers/internal/usecase/questions"
+	"github.com/PANDA-1703/API-questions-and-answers/pkg/logger"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -21,15 +21,15 @@ import (
 
 type QuestionsHandler struct {
 	cfg         *config.HandlerConfig
-	questionsUC questionsUC.QuestionUsecase
-	answersUC   answers.AnswersUsecase
+	questionsUC *questionsUC.QuestionUsecase
+	answersUC   *answers.AnswersUsecase
 	logger      logger.Logger
 }
 
 func NewQuestionsHandler(
 	cfg *config.HandlerConfig,
-	questionsUC questionsUC.QuestionUsecase,
-	answersUC answers.AnswersUsecase,
+	questionsUC *questionsUC.QuestionUsecase,
+	answersUC *answers.AnswersUsecase,
 	logger logger.Logger,
 ) *QuestionsHandler {
 	return &QuestionsHandler{
@@ -148,8 +148,8 @@ func (h *QuestionsHandler) GetByID(w http.ResponseWriter, r *http.Request) {
 		questionsWithAnswers.Answers = append(questionsWithAnswers.Answers, answer.ToHTTPAnswer())
 	}
 
-	if err = writeJSONResponse(w, log, http.StatusOK, res.ToHTTPQuestion()); err != nil {
-		writeErrorResponse(w, log, http.StatusInternalServerError, "failed to write question", err.Error())
+	if err = writeJSONResponse(w, log, http.StatusOK, questionsWithAnswers); err != nil {
+		writeErrorResponse(w, log, http.StatusInternalServerError, "failed to write response", err.Error())
 		return
 	}
 }

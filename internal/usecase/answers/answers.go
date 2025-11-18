@@ -1,9 +1,10 @@
 package answers
 
 import (
-	"API-quest-answ/internal/entity"
 	"context"
 	"fmt"
+
+	"github.com/PANDA-1703/API-questions-and-answers/internal/entity"
 )
 
 func (u AnswersUsecase) Create(ctx context.Context, answer *entity.Answer) (int64, error) {

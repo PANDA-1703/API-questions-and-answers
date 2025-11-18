@@ -1,9 +1,9 @@
 package http
 
 import (
-	"API-quest-answ/internal/config"
 	"context"
 	"fmt"
+	"github.com/PANDA-1703/API-questions-and-answers/internal/config"
 	"net/http"
 )
 

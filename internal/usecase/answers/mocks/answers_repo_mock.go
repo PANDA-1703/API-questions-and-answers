@@ -5,10 +5,10 @@
 package mocks
 
 import (
-	entity "API-quest-answ/internal/entity"
 	context "context"
 	reflect "reflect"
 
+	entity "github.com/PANDA-1703/API-questions-and-answers/internal/entity"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,33 +35,33 @@ func (m *MockAnswersRepo) EXPECT() *MockAnswersRepoMockRecorder {
 	return m.recorder
 }
 
-// CreateAnswer mocks base method.
-func (m *MockAnswersRepo) CreateAnswer(ctx context.Context, answer *entity.Answer) (int64, error) {
+// Create mocks base method.
+func (m *MockAnswersRepo) Create(ctx context.Context, answer *entity.Answer) (int64, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateAnswer", ctx, answer)
+	ret := m.ctrl.Call(m, "Create", ctx, answer)
 	ret0, _ := ret[0].(int64)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// CreateAnswer indicates an expected call of CreateAnswer.
-func (mr *MockAnswersRepoMockRecorder) CreateAnswer(ctx, answer interface{}) *gomock.Call {
+// Create indicates an expected call of Create.
+func (mr *MockAnswersRepoMockRecorder) Create(ctx, answer interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAnswer", reflect.TypeOf((*MockAnswersRepo)(nil).CreateAnswer), ctx, answer)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockAnswersRepo)(nil).Create), ctx, answer)
 }
 
-// DeleteAnswer mocks base method.
-func (m *MockAnswersRepo) DeleteAnswer(ctx context.Context, id int64, userID string) error {
+// Delete mocks base method.
+func (m *MockAnswersRepo) Delete(ctx context.Context, id int64, userID string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteAnswer", ctx, id, userID)
+	ret := m.ctrl.Call(m, "Delete", ctx, id, userID)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// DeleteAnswer indicates an expected call of DeleteAnswer.
-func (mr *MockAnswersRepoMockRecorder) DeleteAnswer(ctx, id, userID interface{}) *gomock.Call {
+// Delete indicates an expected call of Delete.
+func (mr *MockAnswersRepoMockRecorder) Delete(ctx, id, userID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAnswer", reflect.TypeOf((*MockAnswersRepo)(nil).DeleteAnswer), ctx, id, userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockAnswersRepo)(nil).Delete), ctx, id, userID)
 }
 
 // GetAllByQuestionID mocks base method.
@@ -79,17 +79,17 @@ func (mr *MockAnswersRepoMockRecorder) GetAllByQuestionID(ctx, questionID interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllByQuestionID", reflect.TypeOf((*MockAnswersRepo)(nil).GetAllByQuestionID), ctx, questionID)
 }
 
-// GetAnswerByID mocks base method.
-func (m *MockAnswersRepo) GetAnswerByID(ctx context.Context, id int64) (*entity.Answer, error) {
+// GetByID mocks base method.
+func (m *MockAnswersRepo) GetByID(ctx context.Context, id int64) (*entity.Answer, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAnswerByID", ctx, id)
+	ret := m.ctrl.Call(m, "GetByID", ctx, id)
 	ret0, _ := ret[0].(*entity.Answer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetAnswerByID indicates an expected call of GetAnswerByID.
-func (mr *MockAnswersRepoMockRecorder) GetAnswerByID(ctx, id interface{}) *gomock.Call {
+// GetByID indicates an expected call of GetByID.
+func (mr *MockAnswersRepoMockRecorder) GetByID(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAnswerByID", reflect.TypeOf((*MockAnswersRepo)(nil).GetAnswerByID), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockAnswersRepo)(nil).GetByID), ctx, id)
 }

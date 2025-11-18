@@ -1,8 +1,8 @@
 package http
 
 import (
-	"API-quest-answ/api/gen/swagger/models"
 	"encoding/json"
+	"github.com/PANDA-1703/API-questions-and-answers/api/gen/swagger/models"
 	"log/slog"
 	"net/http"
 )

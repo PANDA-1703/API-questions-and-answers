@@ -44,16 +44,18 @@ func Init(configPath string, testMode bool) (*Config, error) {
 	jsonCfg := viper.New()
 	jsonCfg.AddConfigPath(filepath.Dir(configPath))
 	jsonCfg.SetConfigName(filepath.Base(configPath))
+	jsonCfg.SetConfigType("json")
 
 	if err := jsonCfg.ReadInConfig(); err != nil {
-		return nil, fmt.Errorf("config/Init/jsonCfg.ReadInCinfig: %w", err)
+		return nil, fmt.Errorf("config/Init/jsonCfg.ReadInConfig: %w", err)
 	}
 
 	envCfg := viper.New()
 	envCfg.SetConfigFile(".env")
+	envCfg.AutomaticEnv()
 
 	if err := envCfg.ReadInConfig(); err != nil {
-		return nil, fmt.Errorf("config/Init/envCfg.ReadInCinfig: %w", err)
+		fmt.Println("Warning: .env file not found, using docker-compose env vars")
 	}
 
 	cfg := &Config{
@@ -81,6 +83,6 @@ func Init(configPath string, testMode bool) (*Config, error) {
 }
 
 func (p *PostgresConfig) PgSource() string {
-	return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable pool_max_conns=32",
+	return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		p.Host, p.Port, p.User, p.Password, p.DBName)
 }

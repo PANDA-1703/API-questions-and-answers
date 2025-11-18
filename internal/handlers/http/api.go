@@ -28,9 +28,17 @@ func NewRouter(
 func (r *Router) Init() http.Handler {
 	router := mux.NewRouter()
 
-	//questionsRouter := router.PathPrefix("/questions").Subrouter()
-	//questionsRouter.HandleFunc("", h.get).Methods(http.MethodGet)
-	//questionsRouter.HandleFunc("", h.create).Methods(http.MethodPost)
+	questionRouter := router.PathPrefix("/questions").Subrouter()
+	questionRouter.HandleFunc("", r.questionsHandler.GetAll).Methods(http.MethodGet)
+	questionRouter.HandleFunc("", r.questionsHandler.Create).Methods(http.MethodPost)
+	questionRouter.HandleFunc("/{id}", r.questionsHandler.GetByID).Methods(http.MethodGet)
+	questionRouter.HandleFunc("/{id}", r.questionsHandler.Delete).Methods(http.MethodDelete)
+
+	questionRouter.HandleFunc("/{id}/answers", r.answersHandler.Create).Methods(http.MethodPost)
+
+	answerRouter := router.PathPrefix("/answers").Subrouter()
+	answerRouter.HandleFunc("/{id}", r.answersHandler.GetByID).Methods(http.MethodGet)
+	answerRouter.HandleFunc("/{id}", r.answersHandler.Delete).Methods(http.MethodDelete)
 
 	router.Use(r.corsMiddleware)
 	return router

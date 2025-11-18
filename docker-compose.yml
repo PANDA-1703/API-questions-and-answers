@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:18
+    restart: always
+    environment:
+      POSTGRES_DB: questions
+      POSTGRES_USER: questions
+      POSTGRES_PASSWORD: 0000
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U questions -d questions"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  api:
+    build: .
+    depends_on:
+        postgres:
+          condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: questions
+      POSTGRES_USER: questions
+      POSTGRES_PASSWORD: 0000
+      POSTGRES_PORT: 5432
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./.env:/root/.env:ro

@@ -11,6 +11,7 @@ project_code.txt
 *.so
 *.dylib
 
+data
 # Test binary, built with `go test -c`
 *.test
 

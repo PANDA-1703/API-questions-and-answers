@@ -1,12 +1,6 @@
 package http
 
 import (
-	"API-quest-answ/api/gen/swagger/models"
-	"API-quest-answ/internal/config"
-	"API-quest-answ/internal/entity"
-	"API-quest-answ/internal/repository/answers"
-	answersUC "API-quest-answ/internal/usecase/answers"
-	"API-quest-answ/pkg/logger"
 	"encoding/json"
 	"errors"
 	"log/slog"
@@ -14,19 +8,26 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/PANDA-1703/API-questions-and-answers/api/gen/swagger/models"
+	"github.com/PANDA-1703/API-questions-and-answers/internal/config"
+	"github.com/PANDA-1703/API-questions-and-answers/internal/entity"
+	"github.com/PANDA-1703/API-questions-and-answers/internal/repository/answers"
+	answersUC "github.com/PANDA-1703/API-questions-and-answers/internal/usecase/answers"
+	"github.com/PANDA-1703/API-questions-and-answers/pkg/logger"
+
 	"github.com/go-openapi/strfmt"
 	"github.com/gorilla/mux"
 )
 
 type AnswersHandler struct {
 	cfg       *config.HandlerConfig
-	answersUC answersUC.AnswersUsecase
+	answersUC *answersUC.AnswersUsecase
 	logger    logger.Logger
 }
 
 func NewAnswersHandler(
 	cfg *config.HandlerConfig,
-	answersUC answersUC.AnswersUsecase,
+	answersUC *answersUC.AnswersUsecase,
 	logger logger.Logger,
 ) *AnswersHandler {
 	return &AnswersHandler{
@@ -159,7 +160,7 @@ func (h *AnswersHandler) Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = writeJSONResponse(w, log, http.StatusOK, nil); err != nil {
+	if err = writeJSONResponse(w, log, http.StatusNoContent, nil); err != nil {
 		writeErrorResponse(w, log, http.StatusInternalServerError, "failed to write delete answer", err.Error())
 		return
 	}

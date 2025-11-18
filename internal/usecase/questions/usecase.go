@@ -1,10 +1,11 @@
 package questions
 
 import (
-	"API-quest-answ/internal/config"
-	"API-quest-answ/internal/entity"
-	"API-quest-answ/pkg/logger"
 	"context"
+
+	"github.com/PANDA-1703/API-questions-and-answers/internal/config"
+	"github.com/PANDA-1703/API-questions-and-answers/internal/entity"
+	"github.com/PANDA-1703/API-questions-and-answers/pkg/logger"
 )
 
 /*

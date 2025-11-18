@@ -4,8 +4,8 @@ include .env
 
 GEN_SWAGGER_DIR := api/gen/swagger
 SWAGGER_FILE := api/swagger/swagger.yml
-POSTGRES_NAME := questions-postgres
-POSTGRES_PORT := 1342
+POSTGRES_NAME := questions
+POSTGRES_PORT := 5434
 POSTGRES_USER := questions
 POSTGRES_PASSWORD := 0000
 
@@ -15,7 +15,6 @@ help:
 	@echo "Available targets:"
 	@echo "  gen-swagger   - Generate swagger models"
 	@echo "  run           - Run application"
-	@echo "  lint          - Run linters"
 	@echo "  cover         - Run tests with coverage"
 	@echo "  postgres.start - Start PostgreSQL container"
 	@echo "  postgres.stop  - Stop PostgreSQL container"
@@ -37,3 +36,52 @@ gen-swagger:
 	 	generate model --spec=$(SWAGGER_FILE) --target=$(GEN_SWAGGER_DIR)
 	go mod tidy
 
+run:
+	go run cmd/app/main.go -cfg configs/local.json
+
+cover:
+	go test -coverprofile=coverage.out ./...
+	go tool cover -html=coverage.out
+	rm coverage.out
+
+postgres.start:
+	if [ ! "$(shell docker ps -q -f name=$(POSTGRES_NAME))" ]; then \
+        if [ "$(shell docker ps -aq -f status=exited -f name=$(POSTGRES_NAME))" ]; then \
+            docker rm $(POSTGRES_NAME); \
+        fi; \
+		docker run --restart unless-stopped -d -p $(POSTGRES_PORT):5432 \
+            -e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) --name $(POSTGRES_NAME) postgres:13; \
+        sleep 5; \
+    fi;
+	-docker exec $(POSTGRES_NAME) psql -U postgres -c "create user $(POSTGRES_USER) password '$(POSTGRES_PASSWORD)'"
+	-docker exec $(POSTGRES_NAME) psql -U postgres -c "create database $(POSTGRES_USER)"
+	-docker exec $(POSTGRES_NAME) psql -U postgres -c "grant all privileges on database $(POSTGRES_USER) to $(POSTGRES_USER)"
+
+postgres.stop:
+	docker stop $(POSTGRES_NAME)
+	docker rm $(POSTGRES_NAME)
+
+migrate.up:
+	goose -dir migrations postgres "host=localhost port=$(POSTGRES_PORT) user=$(POSTGRES_USER) password=$(POSTGRES_PASSWORD) dbname=$(POSTGRES_USER) sslmode=disable" up
+
+migrate.down:
+	goose -dir migrations postgres "host=localhost port=$(POSTGRES_PORT) user=$(POSTGRES_USER) password=$(POSTGRES_PASSWORD) dbname=$(POSTGRES_USER) sslmode=disable" down
+
+migrate.status:
+	goose -dir migrations postgres "host=localhost port=$(POSTGRES_PORT) user=$(POSTGRES_USER) password=$(POSTGRES_PASSWORD) dbname=$(POSTGRES_USER) sslmode=disable" status
+
+tests:
+	go test -v ./...
+
+swagger.start:
+	docker run --rm -d \
+		--platform linux/amd64 \
+		--name reviews-swagger \
+		-p 9805:8080 \
+		-e SWAGGER_JSON=/swagger.yaml \
+		-v $(shell pwd)/api/swagger/swagger.yaml:/swagger.yaml \
+		swaggerapi/swagger-ui
+
+swagger.stop:
+	docker stop reviews-swagger
+	docker rm reviews-swagger

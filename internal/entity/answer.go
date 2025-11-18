@@ -1,9 +1,10 @@
 package entity
 
 import (
-	"API-quest-answ/api/gen/swagger/models"
-	"API-quest-answ/pkg/utils"
 	"time"
+
+	"github.com/PANDA-1703/API-questions-and-answers/api/gen/swagger/models"
+	"github.com/PANDA-1703/API-questions-and-answers/pkg/utils"
 
 	"github.com/go-openapi/strfmt"
 )

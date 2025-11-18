@@ -1,8 +1,9 @@
 package postgres
 
 import (
-	"API-quest-answ/internal/config"
 	"fmt"
+
+	"github.com/PANDA-1703/API-questions-and-answers/internal/config"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -20,7 +21,7 @@ func New(cfgPsql *config.PostgresConfig) (*gorm.DB, error) {
 		return nil, fmt.Errorf("db.DB(): %w", err)
 	}
 
-	if err := sqlDB.Ping(); err != nil {
+	if err = sqlDB.Ping(); err != nil {
 		return nil, fmt.Errorf("db.Ping: %w", err)
 	}
 

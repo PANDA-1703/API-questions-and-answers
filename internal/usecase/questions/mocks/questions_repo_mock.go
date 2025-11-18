@@ -5,10 +5,10 @@
 package mocks
 
 import (
-	entity "API-quest-answ/internal/entity"
 	context "context"
 	reflect "reflect"
 
+	entity "github.com/PANDA-1703/API-questions-and-answers/internal/entity"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -51,17 +51,17 @@ func (mr *MockQuestionsRepoMockRecorder) Create(ctx, question interface{}) *gomo
 }
 
 // Delete mocks base method.
-func (m *MockQuestionsRepo) Delete(ctx context.Context, id int64, userID string) error {
+func (m *MockQuestionsRepo) Delete(ctx context.Context, id int64) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delete", ctx, id, userID)
+	ret := m.ctrl.Call(m, "Delete", ctx, id)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Delete indicates an expected call of Delete.
-func (mr *MockQuestionsRepoMockRecorder) Delete(ctx, id, userID interface{}) *gomock.Call {
+func (mr *MockQuestionsRepoMockRecorder) Delete(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockQuestionsRepo)(nil).Delete), ctx, id, userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockQuestionsRepo)(nil).Delete), ctx, id)
 }
 
 // GetAll mocks base method.

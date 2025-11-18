@@ -1,8 +1,8 @@
 package questions
 
 import (
-	"API-quest-answ/internal/entity"
 	"context"
+	"github.com/PANDA-1703/API-questions-and-answers/internal/entity"
 
 	"gorm.io/gorm"
 )

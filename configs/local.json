@@ -1,0 +1,14 @@
+{
+  "mode": "local",
+  "httpServer": {
+    "port": 9908,
+    "readTimeout": "5s",
+    "writeTimeout": "5s",
+    "maxHeaderBytes": 1024
+  },
+  "handler": {
+    "requestTimeout": "20s",
+    "streamTimeout": "20s"
+  },
+  "service": {}
+}

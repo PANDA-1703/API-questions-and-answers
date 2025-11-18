@@ -1,7 +1,7 @@
 {
   "mode": "main",
   "httpServer": {
-    "port": 9907,
+    "port": 9908,
     "readTimeout": "5s",
     "writeTimeout": "5s",
     "maxHeaderBytes": 1024
