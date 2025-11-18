@@ -12,6 +12,7 @@ project_code.txt
 *.dylib
 
 data
+app
 # Test binary, built with `go test -c`
 *.test
 
