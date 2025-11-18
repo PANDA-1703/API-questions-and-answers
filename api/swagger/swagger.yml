@@ -7,7 +7,7 @@ schemes:
   - https
   - http
 host: localhost
-basePath: /api
+basePath: /
 produces:
   - application/json
 consumes:
